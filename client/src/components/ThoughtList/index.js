@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 // Renders the list of thoughts
 const ThoughtList = ({ thoughts, title }) => {
+ 
   if (!thoughts.length) {
     return <h3>No Thoughts Yet</h3>;
   }
