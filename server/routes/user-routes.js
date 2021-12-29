@@ -3,8 +3,7 @@ const router = express.Router();
 
 const AWS = require("aws-sdk");
 const awsConfig = {
-  region: "us-east-2",
-  endpoint: "http://localhost:8000",
+  region: "us-east-2"
 
 };
 AWS.config.update(awsConfig);
@@ -34,12 +33,13 @@ router.get('/users/:username', (req, res) => {
     ExpressionAttributeNames: {
       "#un": "username",
       "#ca": "createdAt",
-      "#th": "thought"
+      "#th": "thought",
+      "#img": "image"
     },
     ExpressionAttributeValues: {
       ":user": req.params.username
     },
-    ProjectionExpression: "#un, #th, #ca",
+    ProjectionExpression: "#un, #th, #ca, #img",
     ScanIndexForward: false
   };
 
@@ -54,13 +54,14 @@ router.get('/users/:username', (req, res) => {
   });
 });
 
-router.post('/users', (req,res) => {
+router.post('/users', (req, res) => {
   const params = {
     TableName: table,
     Item: {
       "username": req.body.username,
       "createdAt": Date.now(),
-      "thought": req.body.thought
+      "thought": req.body.thought,
+      "image": req.body.image
     }
   };
   dynamodb.put(params, (err, data) => {
